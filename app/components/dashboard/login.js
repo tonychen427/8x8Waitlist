@@ -13,7 +13,7 @@ import {
   TextInput,
   View,
 } from 'react-native'
-
+import BackgroundImage from './components/BackgroundImage'
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from '../../../assets/fonts/himalayan/config.json';
 const Icon = createIconSetFromFontello(fontelloConfig);
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   keyboardAvoidingViewContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: colors.green,
     paddingLeft: 32,
     paddingRight: 32,
     flexDirection: 'column',
@@ -49,6 +48,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     justifyContent: 'center',
     flexDirection: 'row',
+    backgroundColor: 'transparent'
   },
   logo: {
     width: 100,
@@ -56,19 +56,19 @@ const styles = StyleSheet.create({
   },
   inputView: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.lightWhite,
+    borderBottomColor: colors.white,
     marginBottom: 16,
   },
   inputViewFocus: {
     borderBottomWidth: 1,
-    borderBottomColor: 'white',
+    borderBottomColor: colors.white,
     marginBottom: 16,
   },
   input: {
     height: 40,
   },
   errorView: {
-    backgroundColor: colors.lightWhite,
+    backgroundColor: colors.white,
     padding: 8,
   },
   error: {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: colors.green,
+    backgroundColor: colors.white,
     width: 5,
     height: 5,
   },
@@ -141,9 +141,24 @@ export default class Login extends Component {
   handlePasswordChange (password) {
     this.setState({ password })
   }
+  formatDate (date, postion) {
+    var monthNames = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
 
+    var day = date.getDate() + postion;
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+
+    return monthNames[monthIndex] + ' ' + day + ' ' + year;
+  }
   handleSubmit () {
     const { props, state } = this
+
+    const today = new Date();
 
     this.setState({ isLoading: true })
     props.onLogin({
@@ -157,8 +172,9 @@ export default class Login extends Component {
         numberFormat: 'usa',
       },
       projects: [
-        {id: '123', name: '123123'},
-        {id: '123sss', name: '12aaaa3123'}
+        {id: '123', name: this.formatDate(today, -1)},
+        {id: '123123', name: this.formatDate(today, 0)},
+        {id: '123sss', name: this.formatDate(today, +1)},
       ],
     })
 /*
@@ -208,94 +224,95 @@ export default class Login extends Component {
     const { props, state } = this
 
     return (
-      <View style={styles.container}>
-        <KeyboardAvoidingView
-          behavior="padding"
-          style={styles.keyboardAvoidingViewContainer}
-        >
-          <View style={styles['logo-container']}>
-            <Icon name="8x8" size={80} color="#bf1313" />
-          </View>
-          <ActivityIndicator
-            animating={state.isLoading}
-            color={colors.white}
-          />
 
-          {props.errorMessage ? (
-            <View style={styles.errorView}>
-              <Text style={styles.error}>
-                {props.errorMessage}
-              </Text>
+          <BackgroundImage>
+          <View style={styles.keyboardAvoidingViewContainer}>
+            <View style={styles['logo-container']}>
+              <Icon name="8x8" size={80} color="#bf1313" />
             </View>
-          ) : null}
+            <View style={{
+                justifyContent: 'center',
+                flexDirection: 'row'}}>
+              <Text>Hackathon - Wait List</Text>
+            </View>
+            <ActivityIndicator
+              animating={state.isLoading}
+              color={colors.white}
+            />
 
-          <Animated.View style={[ styles.form, this.animatedStyle ]}>
-            <View
-              style={state.isEmailFocused
-                ? styles.inputViewFocus
-                : styles.inputView
-              }
-            >
-              <TextInput
-                // Field properties
-                autoCapitalize="none"
-                autoCorrect={false}
-                clearButtonMode="unless-editing"
-                keyboardType="email-address"
-                returnKeyType="next"
-                color={colors.white}
-                style={styles.input}
-                // Field attributes
-                value={state.email}
-                onChangeText={this.handleEmailChange}
-                onSubmitEditing={() => this.refs.password.focus()}
-                onBlur={() => this.setState({ isEmailFocused: false })}
-                onFocus={() => this.setState({ isEmailFocused: true })}
-                placeholder="Email"
-                placeholderTextColor={colors.lightWhite}
-              />
-            </View>
-            <View
-              style={state.isPasswordFocused
-                ? styles.inputViewFocus
-                : styles.inputView
-              }
-            >
-              <TextInput
-                // Field properties
-                ref='password'
-                autoCapitalize="none"
-                autoCorrect={false}
-                clearButtonMode="unless-editing"
-                returnKeyType="go"
-                secureTextEntry={true} // password
-                color={colors.white}
-                style={styles.input}
-                // Field attributes
-                value={state.password}
-                onChangeText={this.handlePasswordChange}
-                onSubmitEditing={this.handleSubmit}
-                onBlur={() => this.setState({ isPasswordFocused: false })}
-                onFocus={() => this.setState({ isPasswordFocused: true })}
-                placeholder="Password"
-                placeholderTextColor={colors.lightWhite}
-              />
-            </View>
+            {props.errorMessage ? (
+              <View style={styles.errorView}>
+                <Text style={styles.error}>
+                  {props.errorMessage}
+                </Text>
+              </View>
+            ) : null}
 
-            <View style={styles.buttonWrapper}>
-              <Button
-                title="Login"
-                color={colors.white}
-                onPress={this.handleSubmit}
-                disabled={state.isLoading}
-              />
-              <Animated.View
-                style={[ styles.button, this.animatedButtonStyles ]}
-              />
+            <Animated.View style={[ styles.form, this.animatedStyle ]}>
+              <View
+                style={state.isEmailFocused
+                  ? styles.inputViewFocus
+                  : styles.inputView
+                }
+              >
+                <TextInput
+                  // Field properties
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  clearButtonMode="unless-editing"
+                  keyboardType="email-address"
+                  returnKeyType="next"
+                  color={colors.white}
+                  style={styles.input}
+                  // Field attributes
+                  value={state.email}
+                  onChangeText={this.handleEmailChange}
+                  onSubmitEditing={() => this.refs.password.focus()}
+                  onBlur={() => this.setState({ isEmailFocused: false })}
+                  onFocus={() => this.setState({ isEmailFocused: true })}
+                  placeholder="Email"
+                  placeholderTextColor={colors.white}
+                />
+              </View>
+              <View
+                style={state.isPasswordFocused
+                  ? styles.inputViewFocus
+                  : styles.inputView
+                }
+              >
+                <TextInput
+                  // Field properties
+                  ref='password'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  clearButtonMode="unless-editing"
+                  returnKeyType="go"
+                  secureTextEntry={true} // password
+                  color={colors.white}
+                  style={styles.input}
+                  // Field attributes
+                  value={state.password}
+                  onChangeText={this.handlePasswordChange}
+                  onSubmitEditing={this.handleSubmit}
+                  onBlur={() => this.setState({ isPasswordFocused: false })}
+                  onFocus={() => this.setState({ isPasswordFocused: true })}
+                  placeholder="Password"
+                  placeholderTextColor={colors.white}
+                />
+              </View>
+
+              <View style={styles.buttonWrapper}>
+                <Button
+                  title="LOGIN"
+                  color={colors.white}
+                  onPress={this.handleSubmit}
+                  disabled={state.isLoading}
+                />
+              </View>
+            </Animated.View>
             </View>
-          </Animated.View>
-        </KeyboardAvoidingView>
-      </View>
+          </BackgroundImage>
+
     )
   }
 }

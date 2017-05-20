@@ -17,7 +17,7 @@ import * as colors from './utils/colors'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.green,
+    backgroundColor: colors.lavenderGray,
   },
 })
 
@@ -30,8 +30,39 @@ const getPercentage = defaultMemoize((fraction, total) => {
   return percentage
 })
 const dashboardItemMapping = {
+  served: {
+    label: 'served',
+    firstMetricLabel: 'placed',
+    secondMetricLabel: 'removed',
+    total: data => data.reduce(
+      (acc, stat) => acc + stat.total,
+      0,
+    ),
+    firstMetric: (data) => {
+      const total = data.reduce(
+        (acc, stat) => acc + stat.total,
+        0,
+      )
+      const open = data.reduce(
+        (acc, stat) => acc + stat.open,
+        0,
+      )
+      return getPercentage(open, total)
+    },
+    secondMetric: (data) => {
+      const total = data.reduce(
+        (acc, stat) => acc + stat.total,
+        0,
+      )
+      const complete = data.reduce(
+        (acc, stat) => acc + stat.complete,
+        0,
+      )
+      return getPercentage(complete, total)
+    },
+  },
   orders: {
-    label: 'Orders',
+    label: 'waiting',
     firstMetricLabel: 'Open',
     secondMetricLabel: 'Complete',
     total: data => data.reduce(
@@ -62,9 +93,9 @@ const dashboardItemMapping = {
     },
   },
   carts: {
-    label: 'Carts',
-    firstMetricLabel: 'Active',
-    secondMetricLabel: 'Ordered',
+    label: 'SMS',
+    firstMetricLabel: 'Send',
+    secondMetricLabel: 'Failed',
     total: data => data.reduce(
       (acc, stat) => acc + stat.total,
       0,
@@ -117,6 +148,10 @@ export default class Dashboard extends Component {
       isRefreshing: false,
       dataSource: ds.cloneWithRows([
         {
+          type: 'served',
+          data: [],
+        },
+        {
           type: 'orders',
           data: [],
         },
@@ -146,6 +181,7 @@ export default class Dashboard extends Component {
   fetchProjectStatistics (props) {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows([
+        { type: 'served', data: [] },
         { type: 'orders', data: [] },
         { type: 'carts', data: [] },
       ]),

@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import TextField from 'react-native-md-textinput';
+import Button from 'apsl-react-native-button'
 /* @flow */
 
 import React from 'react';
@@ -7,6 +9,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
 } from 'react-native'
 import md5 from 'blueimp-md5'
 import * as colors from './utils/colors'
@@ -14,16 +17,16 @@ import * as colors from './utils/colors'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 8,
     justifyContent: 'flex-start',
-    backgroundColor: colors.white,
+    backgroundColor: colors.lavenderGray,
   },
   infoContainer: {
     flexGrow: 0,
     flexDirection: 'column',
     backgroundColor: colors.white,
     padding: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.grey,
+    borderRadius: 2,
   },
   propertiesContainer: {
     flexGrow: 1,
@@ -40,9 +43,9 @@ const styles = StyleSheet.create({
     color: colors.darkBlue,
   },
   avatar: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
+    height: 80,
+    width: 80,
+    borderRadius: 40,
   },
   property: {
     paddingBottom: 8,
@@ -54,6 +57,9 @@ const styles = StyleSheet.create({
   propertyValue: {
     color: colors.darkBlue,
   },
+  nestedTextStyle: {
+    color: colors.white,
+  }
 })
 
 const Account = ({ user }) => (
@@ -62,30 +68,21 @@ const Account = ({ user }) => (
       <View style={styles.infoContainer}>
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: getGravatarUrl(user.email, 200) }}
+            source={require('../../../assets/88-writing-pad.png')}
             style={styles.avatar}
           />
         </View>
-        <Text style={styles.nameContainer}>
-          {`${user.firstName} ${user.lastName}`}
-        </Text>
-      </View>
-      <View style={styles.propertiesContainer}>
-        <View style={styles.property}>
-          <Text style={styles.propertyLabel}>{'Email'}</Text>
-          <Text style={styles.propertyValue}>{user.email}</Text>
-        </View>
-        <View style={styles.property}>
-          <Text style={styles.propertyLabel}>{'Language'}</Text>
-          <Text style={styles.propertyValue}>{user.language}</Text>
-        </View>
-        <View style={styles.property}>
-          <Text style={styles.propertyLabel}>{'Number format'}</Text>
-          <Text style={styles.propertyValue}>{user.numberFormat}</Text>
-        </View>
-        <View style={styles.property}>
-          <Text style={styles.propertyLabel}>{'Time zone'}</Text>
-          <Text style={styles.propertyValue}>{user.timeZone || '-'}</Text>
+        <View>
+          <TextField labelColor={colors.darkBlue} highlightColor={colors.darkBlue} label={'Name'}  />
+          <TextField labelColor={colors.darkBlue} highlightColor={colors.darkBlue} label={'Phone'} />
+          <TextField labelColor={colors.darkBlue} highlightColor={colors.darkBlue} label={'# of Guest'} />
+          <TextField labelColor={colors.darkBlue} highlightColor={colors.darkBlue} label={'Date'} />
+          <TextField labelColor={colors.darkBlue} highlightColor={colors.darkBlue} label={'Time'} />
+          <Button style={{backgroundColor: colors.darkBlue}}>
+            <View style={styles.nestedViewStyle}>
+              <Text style={styles.nestedTextStyle}>Add to wait list</Text>
+            </View>
+          </Button>
         </View>
       </View>
     </View>
@@ -106,3 +103,25 @@ export default Account
 function getGravatarUrl (email, size) {
   return `https://www.gravatar.com/avatar/${md5(email)}?s=${size}&d=mm`
 }
+
+// <View style={styles.propertiesContainer}>
+//   <View style={styles.property}>
+//   <Text style={styles.nameContainer}>
+//     {`${user.firstName} ${user.lastName}`}
+//   </Text>
+//     <Text style={styles.propertyLabel}>{'Email'}</Text>
+//     <Text style={styles.propertyValue}>{user.email}</Text>
+//   </View>
+//   <View style={styles.property}>
+//     <Text style={styles.propertyLabel}>{'Language'}</Text>
+//     <Text style={styles.propertyValue}>{user.language}</Text>
+//   </View>
+//   <View style={styles.property}>
+//     <Text style={styles.propertyLabel}>{'Number format'}</Text>
+//     <Text style={styles.propertyValue}>{user.numberFormat}</Text>
+//   </View>
+//   <View style={styles.property}>
+//     <Text style={styles.propertyLabel}>{'Time zone'}</Text>
+//     <Text style={styles.propertyValue}>{user.timeZone || '-'}</Text>
+//   </View>
+// </View>

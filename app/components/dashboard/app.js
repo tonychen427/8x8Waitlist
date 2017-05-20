@@ -21,6 +21,7 @@ import TopBar from './top-bar'
 import Login from './login'
 import Dashboard from './dashboard'
 import Account from './account'
+import WaitList from './waitList'
 
 const initialState = {
   // Used to wait for the application to render before loading the
@@ -43,10 +44,11 @@ const initialState = {
   // The error message shown in the login screen.
   loginErrorMessage: null,
   // The current active navigation tab
-  navigationIndex: 0,
+  navigationIndex: 1,
   // Tab definitions
   navigationRoutes: [
     { key: 'dashboard' },
+    { key: 'waitlist' },
     { key: 'account' },
   ]
 }
@@ -301,6 +303,10 @@ this.setState( {canStart: true} );
         return (
           <Account user={state.user} />
         )
+      case 'waitlist':
+        return (
+          <WaitList user={state.user} />
+        )
       default:
         return null
     }
@@ -323,6 +329,8 @@ this.setState( {canStart: true} );
             iconName = 'chart'
           else if (route.key === 'account')
             iconName = 'user'
+          else if (route.key === 'waitlist')
+            iconName = 'list'
           if (!iconName)
             return null
 

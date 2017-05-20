@@ -13,6 +13,9 @@ import {
   NativeModules,
   Dimensions,
 } from 'react-native'
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from '../../../assets/fonts/himalayan/config.json';
+const Icon1 = createIconSetFromFontello(fontelloConfig);
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import logo from '../../../assets/logo.png'
 import ProjectSwitcher from './project-switcher'
@@ -126,11 +129,13 @@ export default class TopBar extends Component {
     return (
       <View>
         <View style={styles.container}>
+        <Icon1 name="8x8" size={20} color="#bf1313"/>
+        {/*
           <Image
             source={logo}
             style={[ styles.icon, styles.logo ]}
           />
-
+        */}
           <TouchableOpacity onPress={this.openModal}>
             <View style={styles.projectSwitcherButtonContainer}>
               <Text

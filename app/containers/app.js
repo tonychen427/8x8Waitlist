@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 
 import * as reducers from '../reducers';
 import CounterApp from './counterApp';
+import Dashboard from '../components/dashboard/app'
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const reducer = combineReducers(reducers);
@@ -14,7 +15,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-         <CounterApp />
+         <Dashboard />
       </Provider>
     );
   }

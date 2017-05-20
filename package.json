@@ -7,10 +7,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "apsl-react-native-button": "^3.0.2",
     "blueimp-md5": "^2.7.0",
     "react": "16.0.0-alpha.6",
     "react-intl": "^2.3.0",
     "react-native": "0.44.0",
+    "react-native-animated-linear-gradient": "^1.0.2",
+    "react-native-linear-gradient": "^2.0.0",
+    "react-native-material-design": "^0.3.7",
+    "react-native-md-textinput": "^2.0.4",
     "react-native-tab-view": "0.0.65",
     "react-native-vector-icons": "^4.1.1",
     "react-redux": "^5.0.5",
@@ -27,5 +32,9 @@
   "jest": {
     "preset": "react-native"
   },
-  "rnpm": { "assets": [ "./assets/fonts/himalayan/font" ] }
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/himalayan/font"
+    ]
+  }
 }
